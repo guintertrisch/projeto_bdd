@@ -10,11 +10,11 @@ public class HomePage {
 
     private WebDriverWait wait;
     private By botaoCadastrese = By.linkText("Cadastre-se");
-    private By labelLogin = By.xpath("/html/body/div/div[2]/div/form/span");
+    private By labelLogin = By.cssSelector("span[class=\"login100-form-title p-b-1\"]");
     private By usuario = By.name("username");
     private By senha = By.name("pass");
-    private By botaoEntre = By.xpath("/html/body/div/div[2]/div/form/div[6]/button");
-    private By labelFuncionario = By.xpath("//*[@id=\"navbarSupportedContent\"]/ul/li[1]/a");
+    private By botaoEntre = By.cssSelector("button[class=\"login100-form-btn\"]");
+    private By labelFuncionario = By.cssSelector("a[href=\"/empregados/\"]");
 
     public HomePage(WebDriver driver) {
         this.wait = new WebDriverWait(driver, 45);

@@ -1,13 +1,11 @@
 package br.com.inmetrics.teste.steps;
 
 import br.com.inmetrics.teste.locators.HomePage;
-import br.com.inmetrics.teste.support.WebDriverFactory;
 import io.cucumber.java.After;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-import org.junit.AfterClass;
+import io.cucumber.java.pt.Entao;
+import io.cucumber.java.pt.Quando;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -15,32 +13,17 @@ import org.openqa.selenium.WebDriver;
 import static org.junit.Assert.assertEquals;
 
 public class LoginStepDefinitions {
+    public WebDriver driver;
+    public HomePage homePage;
 
-    private WebDriver driver;
-    private HomePage homePage;
-
-
-    /*@Before
-    public void setUp() {
-        WebDriverFactory browsers = new WebDriverFactory();
-        driver = browsers.getDriver("chrome");
-        homePage = new HomePage(driver);
-        driver.get("https://inm-test-app.herokuapp.com/accounts/login/");
-    }*/
-
+    public LoginStepDefinitions() {
+        this.driver = Hooks.webDriver;
+        this.homePage = new HomePage(this.driver);
+    }
 
     @And("clico em Entre")
     public void clicarNoBotaoEntre() {
         homePage.clicarEmEntre();
-    }
-
-    @When("preencho nome do usuario como {string}")
-    public void preencherUsuarioLogin(String nome) {
-        WebDriverFactory browsers = new WebDriverFactory();
-        driver = browsers.getDriver("chrome");
-        homePage = new HomePage(driver);
-        driver.get("https://inm-test-app.herokuapp.com/accounts/login/");
-        homePage.inserirNomeUsuario(nome);
     }
 
 
@@ -49,23 +32,19 @@ public class LoginStepDefinitions {
         homePage.inserirSenha(senha);
     }
 
-    @Then("devo entrar na tela listagem de {string}")
-    public void deveApresentarTelaDeFuncionarios(String labelFuncionario) {
-        assertEquals(homePage.retornaLabelFuncionarios(), labelFuncionario);
+    @Entao("devo entrar na tela de listagem de funcionarios")
+    public void devo_entrar_na_tela_de_listagem_de_funcionarios() {
+        assertEquals("FUNCIONÁRIOS", homePage.retornaLabelFuncionarios());
     }
 
-    @After
-    public void closeBrowser(Scenario cenario) {
+    @Quando("preencho os dados de {string} e {string}")
+    public void preencho_os_dados_de_e(String login, String password) {
+        homePage.inserirNomeUsuario(login);
+        homePage.inserirSenha(password);
 
-        if (cenario.isFailed()) {
-            byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-            cenario.attach(screenshot, "image/png", "name");
-            driver.quit();
-        } else {
-            byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-            cenario.attach(screenshot, "image/png", "name");
-            driver.quit();
-        }
     }
+
 
 }
+
+
